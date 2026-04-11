@@ -23,13 +23,28 @@ class FourierTransform:
         return noisy_image
     
     @staticmethod
-    def fft_denoise(image, threshold=50):
+    def fft_denoise(image, threshold=50, noise_frequency=8):
+        rows, cols = image.shape
+        
         f = fftpack.fft2(image)
         fshift = fftpack.fftshift(f)
         
+        crow, ccol = rows // 2, cols // 2
+        
+        filter_mask = np.ones((rows, cols), dtype=np.float32)
+        
+        for i in range(rows):
+            for j in range(cols):
+                freq_x = j - ccol
+                
+                if abs(freq_x) == noise_frequency or abs(freq_x) == cols - noise_frequency:
+                    filter_mask[i, j] = 0.0
+        
         magnitude = np.abs(fshift)
-        mask = magnitude > threshold
-        fshift_filtered = fshift * mask
+        threshold_mask = magnitude > threshold
+        combined_mask = filter_mask * threshold_mask
+        
+        fshift_filtered = fshift * combined_mask
         
         f_ishift = fftpack.ifftshift(fshift_filtered)
         img_back = fftpack.ifft2(f_ishift)
