@@ -29,7 +29,12 @@ class BloodCellGenerator:
                 else:
                     color = random.randint(215, 235)
                     p = np.full((p_size, p_size, 3), color, dtype=np.uint8)
-                bg[i:i+p_size, j:j+p_size] = p
+                
+                # Вычисляем реальные размеры для вставки (учитываем края)
+                h_insert = min(p_size, self.size[1] - i)
+                w_insert = min(p_size, self.size[0] - j)
+                bg[i:i+h_insert, j:j+w_insert] = p[:h_insert, :w_insert]
+        
         return cv2.GaussianBlur(bg, (7, 7), 0)
 
     @staticmethod
