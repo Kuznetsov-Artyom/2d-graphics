@@ -1,0 +1,64 @@
+{
+  "configuration": "07_with_gaussian_noise",
+  "parameters": {
+    "min_cells": 40,
+    "max_cells": 60,
+    "max_cell_size": 70,
+    "min_cell_coverage": 0.95,
+    "p_cell_artificial": 0.5,
+    "noise_type": "gaussian",
+    "description": "С шумом Гаусса (std=20)"
+  },
+  "noise_type": "gaussian",
+  "generation_info": {
+    "timestamp": "2026-06-05T21:50:00.410283",
+    "seed": 758369922,
+    "total_images": 5,
+    "python_version": "3.12.3",
+    "opencv_version": "4.13.0"
+  },
+  "statistics": {
+    "avg_cells_per_image": 49.4,
+    "min_cells": 44,
+    "max_cells": 58,
+    "avg_coverage_percent": 21.71,
+    "total_generation_time_ms": 1529.78
+  },
+  "images": [
+    {
+      "clean_filename": "image_01_clean.png",
+      "noisy_filename": "image_01_noisy.png",
+      "actual_cells": 44,
+      "coverage_percent": 20.41,
+      "generation_time_ms": 318.89
+    },
+    {
+      "clean_filename": "image_02_clean.png",
+      "noisy_filename": "image_02_noisy.png",
+      "actual_cells": 58,
+      "coverage_percent": 22.3,
+      "generation_time_ms": 412.6
+    },
+    {
+      "clean_filename": "image_03_clean.png",
+      "noisy_filename": "image_03_noisy.png",
+      "actual_cells": 48,
+      "coverage_percent": 19.19,
+      "generation_time_ms": 247.49
+    },
+    {
+      "clean_filename": "image_04_clean.png",
+      "noisy_filename": "image_04_noisy.png",
+      "actual_cells": 49,
+      "coverage_percent": 20.63,
+      "generation_time_ms": 249.29
+    },
+    {
+      "clean_filename": "image_05_clean.png",
+      "noisy_filename": "image_05_noisy.png",
+      "actual_cells": 48,
+      "coverage_percent": 26.04,
+      "generation_time_ms": 301.51
+    }
+  ]
+}

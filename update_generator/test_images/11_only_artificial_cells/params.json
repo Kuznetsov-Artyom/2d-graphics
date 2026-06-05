@@ -1,0 +1,57 @@
+{
+  "configuration": "11_only_artificial_cells",
+  "parameters": {
+    "min_cells": 40,
+    "max_cells": 60,
+    "max_cell_size": 70,
+    "min_cell_coverage": 0.95,
+    "p_cell_artificial": 1.0,
+    "description": "Только искусственные клетки"
+  },
+  "generation_info": {
+    "timestamp": "2026-06-05T21:50:05.737473",
+    "seed": 179197630,
+    "total_images": 5,
+    "python_version": "3.12.3",
+    "opencv_version": "4.13.0"
+  },
+  "statistics": {
+    "avg_cells_per_image": 50.6,
+    "min_cells": 47,
+    "max_cells": 53,
+    "avg_coverage_percent": 17.12,
+    "total_generation_time_ms": 1163.57
+  },
+  "images": [
+    {
+      "filename": "image_01.png",
+      "actual_cells": 53,
+      "coverage_percent": 18.05,
+      "generation_time_ms": 241.81
+    },
+    {
+      "filename": "image_02.png",
+      "actual_cells": 49,
+      "coverage_percent": 17.06,
+      "generation_time_ms": 225.91
+    },
+    {
+      "filename": "image_03.png",
+      "actual_cells": 51,
+      "coverage_percent": 17.75,
+      "generation_time_ms": 240.89
+    },
+    {
+      "filename": "image_04.png",
+      "actual_cells": 47,
+      "coverage_percent": 16.42,
+      "generation_time_ms": 204.94
+    },
+    {
+      "filename": "image_05.png",
+      "actual_cells": 53,
+      "coverage_percent": 16.31,
+      "generation_time_ms": 250.02
+    }
+  ]
+}

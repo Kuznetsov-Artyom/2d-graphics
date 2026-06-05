@@ -1,0 +1,64 @@
+{
+  "configuration": "09_denoised_median",
+  "parameters": {
+    "min_cells": 40,
+    "max_cells": 60,
+    "max_cell_size": 70,
+    "min_cell_coverage": 0.95,
+    "p_cell_artificial": 0.5,
+    "filter_method": "median",
+    "description": "Зашумлённое → Медианный фильтр (k=5)"
+  },
+  "filter_method": "median",
+  "generation_info": {
+    "timestamp": "2026-06-05T21:50:01.888207",
+    "seed": 489455490,
+    "total_images": 5,
+    "python_version": "3.12.3",
+    "opencv_version": "4.13.0"
+  },
+  "statistics": {
+    "avg_cells_per_image": 51.0,
+    "min_cells": 40,
+    "max_cells": 58,
+    "avg_coverage_percent": 23.1,
+    "total_generation_time_ms": -220.29
+  },
+  "images": [
+    {
+      "noisy_filename": "image_01_noisy.png",
+      "denoised_filename": "image_01_denoised.png",
+      "actual_cells": 40,
+      "coverage_percent": 18.4,
+      "generation_time_ms": 207.64
+    },
+    {
+      "noisy_filename": "image_02_noisy.png",
+      "denoised_filename": "image_02_denoised.png",
+      "actual_cells": 58,
+      "coverage_percent": 24.07,
+      "generation_time_ms": 334.25
+    },
+    {
+      "noisy_filename": "image_03_noisy.png",
+      "denoised_filename": "image_03_denoised.png",
+      "actual_cells": 58,
+      "coverage_percent": 29.57,
+      "generation_time_ms": -1295.99
+    },
+    {
+      "noisy_filename": "image_04_noisy.png",
+      "denoised_filename": "image_04_denoised.png",
+      "actual_cells": 45,
+      "coverage_percent": 18.33,
+      "generation_time_ms": 233.37
+    },
+    {
+      "noisy_filename": "image_05_noisy.png",
+      "denoised_filename": "image_05_denoised.png",
+      "actual_cells": 54,
+      "coverage_percent": 25.13,
+      "generation_time_ms": 300.45
+    }
+  ]
+}

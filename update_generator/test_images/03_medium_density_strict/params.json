@@ -1,0 +1,57 @@
+{
+  "configuration": "03_medium_density_strict",
+  "parameters": {
+    "min_cells": 40,
+    "max_cells": 60,
+    "max_cell_size": 70,
+    "min_cell_coverage": 0.95,
+    "p_cell_artificial": 0.5,
+    "description": "Средняя плотность, строгий контроль перекрытий"
+  },
+  "generation_info": {
+    "timestamp": "2026-06-05T21:49:50.924475",
+    "seed": 572231543,
+    "total_images": 5,
+    "python_version": "3.12.3",
+    "opencv_version": "4.13.0"
+  },
+  "statistics": {
+    "avg_cells_per_image": 45.6,
+    "min_cells": 40,
+    "max_cells": 58,
+    "avg_coverage_percent": 21.3,
+    "total_generation_time_ms": 1362.57
+  },
+  "images": [
+    {
+      "filename": "image_01.png",
+      "actual_cells": 41,
+      "coverage_percent": 17.92,
+      "generation_time_ms": 249.76
+    },
+    {
+      "filename": "image_02.png",
+      "actual_cells": 44,
+      "coverage_percent": 19.9,
+      "generation_time_ms": 261.03
+    },
+    {
+      "filename": "image_03.png",
+      "actual_cells": 45,
+      "coverage_percent": 22.64,
+      "generation_time_ms": 273.31
+    },
+    {
+      "filename": "image_04.png",
+      "actual_cells": 40,
+      "coverage_percent": 17.31,
+      "generation_time_ms": 225.72
+    },
+    {
+      "filename": "image_05.png",
+      "actual_cells": 58,
+      "coverage_percent": 28.72,
+      "generation_time_ms": 352.75
+    }
+  ]
+}

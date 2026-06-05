@@ -1,0 +1,57 @@
+{
+  "configuration": "01_low_density_small_cells",
+  "parameters": {
+    "min_cells": 10,
+    "max_cells": 20,
+    "max_cell_size": 40,
+    "min_cell_coverage": 0.95,
+    "p_cell_artificial": 0.5,
+    "description": "Мало маленьких клеток"
+  },
+  "generation_info": {
+    "timestamp": "2026-06-05T21:49:49.038210",
+    "seed": 850951552,
+    "total_images": 5,
+    "python_version": "3.12.3",
+    "opencv_version": "4.13.0"
+  },
+  "statistics": {
+    "avg_cells_per_image": 14.8,
+    "min_cells": 10,
+    "max_cells": 20,
+    "avg_coverage_percent": 4.16,
+    "total_generation_time_ms": 414.45
+  },
+  "images": [
+    {
+      "filename": "image_01.png",
+      "actual_cells": 12,
+      "coverage_percent": 3.83,
+      "generation_time_ms": 86.46
+    },
+    {
+      "filename": "image_02.png",
+      "actual_cells": 15,
+      "coverage_percent": 4.3,
+      "generation_time_ms": 84.99
+    },
+    {
+      "filename": "image_03.png",
+      "actual_cells": 20,
+      "coverage_percent": 4.97,
+      "generation_time_ms": 101.36
+    },
+    {
+      "filename": "image_04.png",
+      "actual_cells": 17,
+      "coverage_percent": 4.08,
+      "generation_time_ms": 89.6
+    },
+    {
+      "filename": "image_05.png",
+      "actual_cells": 10,
+      "coverage_percent": 3.62,
+      "generation_time_ms": 52.04
+    }
+  ]
+}

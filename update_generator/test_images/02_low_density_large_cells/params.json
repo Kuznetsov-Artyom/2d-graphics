@@ -1,0 +1,57 @@
+{
+  "configuration": "02_low_density_large_cells",
+  "parameters": {
+    "min_cells": 10,
+    "max_cells": 20,
+    "max_cell_size": 90,
+    "min_cell_coverage": 0.95,
+    "p_cell_artificial": 0.5,
+    "description": "Мало больших клеток"
+  },
+  "generation_info": {
+    "timestamp": "2026-06-05T21:49:49.505982",
+    "seed": 582099424,
+    "total_images": 5,
+    "python_version": "3.12.3",
+    "opencv_version": "4.13.0"
+  },
+  "statistics": {
+    "avg_cells_per_image": 15.4,
+    "min_cells": 11,
+    "max_cells": 20,
+    "avg_coverage_percent": 11.74,
+    "total_generation_time_ms": 416.4
+  },
+  "images": [
+    {
+      "filename": "image_01.png",
+      "actual_cells": 20,
+      "coverage_percent": 13.18,
+      "generation_time_ms": 116.28
+    },
+    {
+      "filename": "image_02.png",
+      "actual_cells": 15,
+      "coverage_percent": 14.23,
+      "generation_time_ms": 81.87
+    },
+    {
+      "filename": "image_03.png",
+      "actual_cells": 17,
+      "coverage_percent": 10.72,
+      "generation_time_ms": 92.66
+    },
+    {
+      "filename": "image_04.png",
+      "actual_cells": 11,
+      "coverage_percent": 9.01,
+      "generation_time_ms": 54.88
+    },
+    {
+      "filename": "image_05.png",
+      "actual_cells": 14,
+      "coverage_percent": 11.58,
+      "generation_time_ms": 70.71
+    }
+  ]
+}
