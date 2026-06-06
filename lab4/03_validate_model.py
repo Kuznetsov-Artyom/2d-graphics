@@ -96,12 +96,12 @@ def main():
     # Confusion matrix
     logger.info("\nПостроение confusion matrix...")
     pred_classes = torch.argmax(all_outputs, dim=1).numpy()
-    true_classes = torch.argmax(all_targets, dim=1).numpy()
+    true_classes = all_targets.squeeze().numpy()  # Уже количество клеток
     
     # Преобразование в реальное количество клеток
-    # Индекс 0 соответствует 20 клеткам, индекс 20 соответствует 40 клеткам
-    pred_counts = pred_classes + 20
-    true_counts = true_classes + 20
+    # Индекс 0 соответствует 5 клеткам, индекс 10 соответствует 15 клеткам
+    pred_counts = pred_classes + 5
+    true_counts = true_classes + 5
     
     plot_confusion_matrix(true_counts, pred_counts)
     

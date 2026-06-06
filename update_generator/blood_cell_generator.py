@@ -18,24 +18,56 @@ class BloodCellGenerator:
         self.max_cell_size = max_cell_size
         self.p_cell_artificial = p_cell_artificial
 
-    def create_background(self):
-        bg = np.zeros((self.size[1], self.size[0], 3), dtype=np.uint8)
-        p_size = 64
-        for i in range(0, self.size[1], p_size):
-            for j in range(0, self.size[0], p_size):
-                if random.random() > 0.4 and self.bg_files:
-                    p = cv2.imread(random.choice(self.bg_files))
-                    p = cv2.resize(p, (p_size, p_size))
-                else:
-                    color = random.randint(215, 235)
-                    p = np.full((p_size, p_size, 3), color, dtype=np.uint8)
-                
-                # Вычисляем реальные размеры для вставки (учитываем края)
-                h_insert = min(p_size, self.size[1] - i)
-                w_insert = min(p_size, self.size[0] - j)
-                bg[i:i+h_insert, j:j+w_insert] = p[:h_insert, :w_insert]
+    def generate_artificial_cell(self, x, y):
+        """Генерация реалистичной искусственной клетки."""
+        rad = np.random.randint(8, 15)
         
-        return cv2.GaussianBlur(bg, (7, 7), 0)
+        # Создаем клетку с градиентом
+        cell = np.zeros((rad*2, rad*2, 3), dtype=np.uint8)
+        
+        # Создаем градиент от центра к краям
+        center = (rad, rad)
+        for i in range(rad*2):
+            for j in range(rad*2):
+                dist = np.sqrt((i - center[0])**2 + (j - center[1])**2)
+                if dist <= rad:
+                    # Градиент от центра к краям
+                    intensity = 1.0 - (dist / rad) * 0.3
+                    color = (random.randint(130, 170), 30, random.randint(110, 150))
+                    cell[i, j] = [int(c * intensity) for c in color]
+        
+        # Добавляем ядро клетки (более темное в центре)
+        nucleus_rad = rad // 3
+        cv2.circle(cell, (rad, rad), nucleus_rad, (80, 20, 80), -1)
+        
+        # Добавляем мембрану
+        cv2.circle(cell, (rad, rad), rad, (100, 20, 90), 2)
+        
+        return cell
+    
+    def create_background(self):
+        """Создание реалистичного фона."""
+        bg = np.zeros((self.size[1], self.size[0], 3), dtype=np.uint8)
+        
+        # Используем патчи из датасета
+        if self.bg_files:
+            # Выбираем случайный патч фона
+            bg_patch = cv2.imread(random.choice(self.bg_files))
+            bg_patch = cv2.resize(bg_patch, self.size)
+            bg = bg_patch
+        else:
+            # Создаем однотонный фон с вариативностью
+            base_color = random.randint(200, 235)
+            bg = np.full((self.size[1], self.size[0], 3), base_color, dtype=np.uint8)
+            
+            # Добавляем шум для реалистичности
+            noise = np.random.normal(0, 5, bg.shape).astype(np.int16)
+            bg = np.clip(bg.astype(np.int16) + noise, 0, 255).astype(np.uint8)
+        
+        # Применяем легкое размытие для реалистичности
+        bg = cv2.GaussianBlur(bg, (5, 5), 0)
+        
+        return bg
 
     @staticmethod
     def overlay_image_center(background_img, foreground_img, center_x, center_y):
@@ -94,12 +126,16 @@ class BloodCellGenerator:
                 use_artificial_cell = bool(np.random.choice(2, p=[1-self.p_cell_artificial, self.p_cell_artificial]))
 
                 if use_artificial_cell:
-                    rad = np.random.randint(15, 25)
-                    cv2.circle(temp_mask, center=(x, y), radius=rad, color=255, thickness=-1)
-                    color = (random.randint(130, 170), 30, random.randint(110, 150))
-                    cv2.circle(temp_img, center=(x, y), radius=rad, color=color, thickness=-1)
-                    stroke_color = tuple(255 - c for c in color)
-                    cv2.circle(temp_img, center=(x, y), radius=rad, color=stroke_color, thickness=3)
+                    # Генерируем реалистичную искусственную клетку
+                    cell = self.generate_artificial_cell(x, y)
+                    h, w = cell.shape[:2]
+                    
+                    # Создаем маску для клетки
+                    cell_mask = np.zeros((h, w), dtype=np.uint8)
+                    cv2.circle(cell_mask, (w//2, h//2), w//2, 255, -1)
+                    
+                    temp_mask = self.overlay_image_center(temp_mask, cell_mask, x, y)
+                    temp_img = self.overlay_image_center(temp_img, cell, x, y)
                 else:
                     if not self.cell_files:
                         continue

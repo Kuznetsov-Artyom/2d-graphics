@@ -12,31 +12,19 @@ from torchvision import transforms
 from config import CONFIG
 
 
-def create_gaussian_target(cell_count, min_cells=20, max_cells=40, sigma=None):
+def create_label_target(cell_count, min_cells=5):
     """
-    Создает вероятностной вектор с гауссовым распределением.
+    Создает простой label для CrossEntropyLoss.
     
     Args:
-        cell_count: истинное количество клеток (20-40)
-        min_cells: минимальное количество клеток (20)
-        max_cells: максимальное количество клеток (40)
-        sigma: стандартное отклонение гауссианы (по умолчанию из CONFIG)
+        cell_count: истинное количество клеток (5-15)
+        min_cells: минимальное количество клеток (5)
     
     Returns:
-        target: numpy array размера (num_classes,) = (21,)
+        label: индекс класса (0-10)
     """
-    if sigma is None:
-        sigma = CONFIG['sigma']
-    
-    num_classes = max_cells - min_cells + 1  # 21 класс
-    target = np.zeros(num_classes, dtype=np.float32)
-    x = np.arange(num_classes, dtype=np.float32)
-    class_idx = cell_count - min_cells
-    
-    # Гауссово распределение
-    target = np.exp(-((x - class_idx) ** 2) / (2 * sigma ** 2))
-    
-    return target
+    label = cell_count - min_cells
+    return label
 
 
 def get_train_transform():
@@ -123,12 +111,12 @@ class BloodCellDataset(Dataset):
         if self.transform:
             img = self.transform(img)
         
-        # Создание target вектора
+        # Создание label (простой индекс класса для CrossEntropyLoss)
         cell_count = sample['cell_count']
-        target = create_gaussian_target(cell_count)
-        target = torch.FloatTensor(target)
+        label = create_label_target(cell_count, min_cells=5)
+        label = torch.tensor(label, dtype=torch.long)  # Скалярный LongTensor для CrossEntropyLoss
         
-        return img, target, cell_count
+        return img, label, cell_count
 
 
 def get_data_loaders(batch_size=None, num_workers=None):

@@ -9,6 +9,43 @@ from torchvision import models
 from config import CONFIG
 
 
+class SmoothBCELoss(nn.Module):
+    """
+    Binary Cross-Entropy Loss с label smoothing для гауссова распределения.
+    
+    Сглаживает target вектор для предотвращения переобучения.
+    """
+    
+    def __init__(self, smoothing=None):
+        """
+        Args:
+            smoothing: коэффициент сглаживания (по умолчанию из CONFIG)
+        """
+        super(SmoothBCELoss, self).__init__()
+        
+        if smoothing is None:
+            smoothing = CONFIG['label_smoothing']
+        
+        self.smoothing = smoothing
+    
+    def forward(self, outputs, targets):
+        """
+        Args:
+            outputs: предсказания модели [batch_size, num_classes]
+            targets: target векторы [batch_size, num_classes]
+        
+        Returns:
+            loss: scalar
+        """
+        # Label smoothing
+        targets = targets * (1 - self.smoothing) + 0.5 * self.smoothing
+        
+        # BCE with logits (стабильнее чем BCELoss + Sigmoid)
+        loss = F.binary_cross_entropy_with_logits(outputs, targets)
+        
+        return loss
+
+
 class CellCounter(nn.Module):
     """
     Модель для подсчета клеток на основе ResNet.

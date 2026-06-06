@@ -25,7 +25,7 @@ from tqdm import tqdm
 
 from config import CONFIG
 from dataset import get_data_loaders
-from model import get_model, SmoothBCELoss
+from model import get_model
 from utils import setup_logging, plot_training_curves
 
 
@@ -64,8 +64,10 @@ def train_one_epoch(model, loader, criterion, optimizer, scaler, device, accumul
         total_loss += loss.item() * accumulation_steps
         
         pred_classes = torch.argmax(outputs, dim=1)
-        true_classes = torch.argmax(targets, dim=1)
-        correct += (pred_classes == true_classes).sum().item()
+        true_classes = targets.squeeze().long()
+        # Мягкая метрика (как в g2d-m1-labs): 1.0 - |pred - true| / num_classes
+        is_correct = 1.0 - (torch.abs(pred_classes - true_classes)).float() / float(outputs.shape[1])
+        correct += is_correct.sum().item()
         total += targets.size(0)
         
         # Обновление progress bar
@@ -99,8 +101,10 @@ def validate(model, loader, criterion, device):
             total_loss += loss.item()
             
             pred_classes = torch.argmax(outputs, dim=1)
-            true_classes = torch.argmax(targets, dim=1)
-            correct += (pred_classes == true_classes).sum().item()
+            true_classes = targets.squeeze().long()
+            # Мягкая метрика (как в g2d-m1-labs): 1.0 - |pred - true| / num_classes
+            is_correct = 1.0 - (torch.abs(pred_classes - true_classes)).float() / float(outputs.shape[1])
+            correct += is_correct.sum().item()
             total += targets.size(0)
     
     avg_loss = total_loss / len(loader)
@@ -138,17 +142,10 @@ def main():
     logger.info(f"Модель: {CONFIG['model_name']}")
     logger.info(f"Параметров: {sum(p.numel() for p in model.parameters()):,}")
     
-    # Loss, optimizer, scheduler
-    criterion = SmoothBCELoss()
-    optimizer = optim.Adam(
-        model.parameters(),
-        lr=CONFIG['learning_rate'],
-        weight_decay=CONFIG['weight_decay']
-    )
-    scheduler = optim.lr_scheduler.CosineAnnealingLR(
-        optimizer,
-        T_max=CONFIG['num_epochs']
-    )
+    # Loss, optimizer, scheduler (как в g2d-m1-labs + scheduler)
+    criterion = torch.nn.CrossEntropyLoss()
+    optimizer = optim.SGD(model.parameters(), lr=CONFIG['learning_rate'])
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.5)
     scaler = GradScaler()
     
     # Training loop

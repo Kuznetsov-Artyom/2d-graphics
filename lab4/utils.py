@@ -164,20 +164,22 @@ def plot_predictions(model, test_images, num_examples=5, save_path=None):
 
 def compute_metrics(outputs, targets, counts):
     """
-    Вычисляет метрики: top-1 accuracy, top-3 accuracy, MAE.
+    Вычисляет метрики: top-1 accuracy (мягкая метрика), top-3 accuracy, MAE.
     
     Args:
         outputs: предсказания модели [batch_size, num_classes]
-        targets: target векторы [batch_size, num_classes]
+        targets: индексы классов [batch_size]
         counts: истинные количества клеток [batch_size]
     
     Returns:
         metrics: dict с метриками
     """
-    # Top-1 accuracy
+    # Top-1 accuracy (мягкая метрика как в g2d-m1-labs)
     pred_classes = torch.argmax(outputs, dim=1)
-    true_classes = torch.argmax(targets, dim=1)
-    top1_acc = (pred_classes == true_classes).float().mean().item()
+    true_classes = targets.squeeze().long()
+    # Мягкая метрика: 1.0 - |pred - true| / num_classes
+    is_correct = 1.0 - (torch.abs(pred_classes - true_classes)).float() / float(outputs.shape[1])
+    top1_acc = is_correct.mean().item()
     
     # Top-3 accuracy
     top3_preds = torch.topk(outputs, k=3, dim=1).indices
@@ -188,7 +190,7 @@ def compute_metrics(outputs, targets, counts):
     top3_acc = top3_correct / len(true_classes)
     
     # MAE
-    pred_counts = 20 + pred_classes.cpu().numpy()
+    pred_counts = 5 + pred_classes.cpu().numpy()  # Индекс 0 -> 5 клеток
     true_counts = counts.cpu().numpy()
     mae = np.mean(np.abs(pred_counts - true_counts))
     
